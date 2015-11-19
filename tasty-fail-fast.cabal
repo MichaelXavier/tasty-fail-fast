@@ -1,6 +1,6 @@
 name:                tasty-fail-fast
-version:             0.0.0.1
-synopsis:            Initial project template from stack
+version:             0.0.1
+synopsis:            Adds the ability to fail a tasty test suite on first test failure
 description:         Please see README.md
 homepage:            http://github.com/MichaelXavier/tasty-fail-fast#readme
 license:             MIT
@@ -11,6 +11,12 @@ copyright:           2015 Michael Xavier
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
+tested-with:         GHC == 7.6.3, GHC == 7.8.4, GHC == 7.10.2
+
+extra-source-files:
+  README.md
+  changelog.md
+  test/golden/simple.tap
 
 flag lib-Werror
   default: False
@@ -30,6 +36,7 @@ library
     ghc-options: -Werror
 
   ghc-options: -Wall
+
 
 test-suite test
   type: exitcode-stdio-1.0
