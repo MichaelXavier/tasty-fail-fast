@@ -4,21 +4,58 @@ module Main
 
 
 -------------------------------------------------------------------------------
+import           Control.Exception
+import           Control.Monad
+import           System.Directory
+import           System.Exit
+import           System.IO
 import           Test.Tasty
+import           Test.Tasty.Golden
 import           Test.Tasty.HUnit
-import           Test.Tasty.Ingredients.Basic
+import           Test.Tasty.Ingredients
+import           Test.Tasty.Options
+import           Test.Tasty.Runners.TAP
 -------------------------------------------------------------------------------
 import           Test.Tasty.Ingredients.FailFast
 -------------------------------------------------------------------------------
 
 main :: IO ()
-main = defaultMainWithIngredients [ listingTests
-                                  , failFast consoleTestReporter] tests
+main = do
+  tmpDir <- getTemporaryDirectory
+  defaultMain (tests tmpDir)
 
 
 -------------------------------------------------------------------------------
-tests :: TestTree
-tests = testGroup "tasty-fail-fast"
+tests :: FilePath -> TestTree
+tests tmpDir  = testGroup "tasty-fail-fast"
+  [
+    let tmpPath = tmpDir ++ "/simple.golden"
+    in goldenVsFileDiff "simple.golden"
+                        diffCmd
+                        (goldenPath "simple.golden")
+                        tmpPath
+                        (mkSimple tmpPath)
+  ]
+
+
+-------------------------------------------------------------------------------
+diffCmd :: FilePath -> FilePath -> [String]
+diffCmd ref new = ["diff", "-u", ref, new]
+
+
+-------------------------------------------------------------------------------
+mkSimple :: FilePath -> IO ()
+mkSimple tmpPath = bracket (openFile tmpPath WriteMode) hClose $ \h -> do
+  let Just runner = tryIngredients [failFast (tapRunner' h)] opts exampleTests
+  void runner  `catch` interceptExit
+  where interceptExit :: ExitCode -> IO ()
+        interceptExit _ = return ()
+        opts = setOption (FailFast True) mempty
+
+
+-------------------------------------------------------------------------------
+exampleTests :: TestTree
+exampleTests = testGroup "some example tests"
   [
     testCase "trivial pass" (True @?= True)
   , testCase "first failure" (True @?= False)
@@ -26,3 +63,8 @@ tests = testGroup "tasty-fail-fast"
   , testCase "second failure" (True @?= False)
   , testCase "yet another pass" (True @?= True)
   ]
+
+
+-------------------------------------------------------------------------------
+goldenPath :: FilePath -> FilePath
+goldenPath fp = "test/golden/" ++ fp

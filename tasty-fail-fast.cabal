@@ -41,6 +41,9 @@ test-suite test
                   , tasty
                   , tasty-fail-fast
                   , tasty-hunit
+                  , tasty-golden
+                  , tasty-tap
+                  , directory
 
   if flag(lib-Werror)
     ghc-options: -Werror

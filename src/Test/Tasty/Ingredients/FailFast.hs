@@ -1,7 +1,10 @@
-{-# LANGUAGE CPP           #-}
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE StandaloneDeriving #-}
+
+{-# LANGUAGE CPP                #-}
+{-# LANGUAGE TupleSections      #-}
 module Test.Tasty.Ingredients.FailFast
     ( failFast
+    , FailFast(..)
     ) where
 
 
@@ -32,10 +35,8 @@ failFast (TestReporter opts f) = TestReporter (ffOpt:opts) f'
 -------------------------------------------------------------------------------
 ffHijack :: (StatusMap -> IO (Time -> IO Bool)) -> StatusMap -> IO (Time -> IO Bool)
 ffHijack f sm = do
-  hijackedSM <- IM.fromList <$> mapM mkStatus (IM.keys sm)
-  _ <- forkIO (work sm hijackedSM)
-  f hijackedSM
-  where mkStatus i = (i,) <$> newTVarIO NotStarted
+  _ <- forkIO (work sm)
+  f sm
 
 -------------------------------------------------------------------------------
 newtype FailFast = FailFast Bool
@@ -49,10 +50,10 @@ instance IsOption FailFast where
 
 
 -------------------------------------------------------------------------------
-work :: StatusMap -> StatusMap -> IO ()
-work src dest = atomically $ do
-  check =<< anyFailed src
-  failAll dest
+work :: StatusMap -> IO ()
+work sm = atomically $ do
+  check =<< anyFailed sm
+  failAll sm
 
 
 -------------------------------------------------------------------------------
@@ -72,6 +73,7 @@ anyM p (x:xs)   = do q <- p x
 -------------------------------------------------------------------------------
 failAll :: StatusMap -> STM ()
 failAll = mapM_ failOne . IM.elems
+
 
 -------------------------------------------------------------------------------
 failOne :: TVar Status -> STM ()
