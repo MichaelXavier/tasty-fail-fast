@@ -11,6 +11,7 @@ import           Control.Applicative
 import           Control.Concurrent
 import           Control.Concurrent.STM
 import qualified Data.IntMap.Strict     as IM
+import           Data.Monoid
 import           Data.Proxy
 import           Test.Tasty.Ingredients
 import           Test.Tasty.Options
