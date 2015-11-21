@@ -1,5 +1,6 @@
-{-# LANGUAGE CPP           #-}
-{-# LANGUAGE TupleSections #-}
+{-# LANGUAGE CPP                        #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE TupleSections              #-}
 module Test.Tasty.Ingredients.FailFast
     ( failFast
     , FailFast(..)
@@ -13,6 +14,7 @@ import           Control.Concurrent.STM
 import qualified Data.IntMap.Strict     as IM
 import           Data.Monoid
 import           Data.Proxy
+import           Data.Typeable
 import           Test.Tasty.Ingredients
 import           Test.Tasty.Options
 import           Test.Tasty.Runners
