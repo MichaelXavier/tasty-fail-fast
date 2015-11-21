@@ -39,7 +39,7 @@ ffHijack f sm = do
   f sm
 
 -------------------------------------------------------------------------------
-newtype FailFast = FailFast Bool
+newtype FailFast = FailFast Bool deriving (Show, Eq, Typeable)
 
 instance IsOption FailFast where
   defaultValue = FailFast False
