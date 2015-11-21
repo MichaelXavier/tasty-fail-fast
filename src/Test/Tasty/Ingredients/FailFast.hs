@@ -1,7 +1,5 @@
-{-# LANGUAGE StandaloneDeriving #-}
-
-{-# LANGUAGE CPP                #-}
-{-# LANGUAGE TupleSections      #-}
+{-# LANGUAGE CPP           #-}
+{-# LANGUAGE TupleSections #-}
 module Test.Tasty.Ingredients.FailFast
     ( failFast
     , FailFast(..)
@@ -18,6 +16,7 @@ import           Test.Tasty.Ingredients
 import           Test.Tasty.Options
 import           Test.Tasty.Runners
 -------------------------------------------------------------------------------
+import           Prelude
 -------------------------------------------------------------------------------
 
 
