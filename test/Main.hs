@@ -6,6 +6,7 @@ module Main
 -------------------------------------------------------------------------------
 import           Control.Exception
 import           Control.Monad
+import           Data.Monoid
 import           System.Directory
 import           System.Exit
 import           System.IO
@@ -18,6 +19,10 @@ import           Test.Tasty.Runners.TAP
 -------------------------------------------------------------------------------
 import           Test.Tasty.Ingredients.FailFast
 -------------------------------------------------------------------------------
+import           Prelude
+-------------------------------------------------------------------------------
+
+
 
 main :: IO ()
 main = do
