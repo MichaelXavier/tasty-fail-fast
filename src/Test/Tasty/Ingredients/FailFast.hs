@@ -23,15 +23,16 @@ import           Prelude
 -------------------------------------------------------------------------------
 
 
--- | Decorate a TestReporter. Will throw an error if you provide a TestManager.
+-- | Decorate a TestReporter. Only applicable to TestReporters. Will
+-- be a noop for TestManager.
 failFast :: Ingredient -> Ingredient
-failFast (TestManager _ _) = error "FailFast must be applied to a TestReporter"
 failFast (TestReporter opts f) = TestReporter (ffOpt:opts) f'
   where ffOpt = Option (Proxy :: Proxy FailFast)
         f' oset tree = let FailFast ff = lookupOption oset
                        in if ff
                             then ffHijack <$> f oset tree
                             else f oset tree
+failFast i = i -- not applicable
 
 
 -------------------------------------------------------------------------------
