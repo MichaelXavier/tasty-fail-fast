@@ -4,7 +4,7 @@ packages:
 - '.'
 
 extra-deps:
-- 'tasty-tap-0.0.2'
+- 'tasty-tap-0.0.4'
 
 
 flags: {}
