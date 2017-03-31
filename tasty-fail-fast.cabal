@@ -10,7 +10,7 @@ description:
   .
   Your test suite will now get a @--fail-fast@ flag.
 homepage:            http://github.com/MichaelXavier/tasty-fail-fast#readme
-license:             MIT
+license:             BSD3
 license-file:        LICENSE
 author:              Michael Xavier
 maintainer:          michael@michaelxavier.net
