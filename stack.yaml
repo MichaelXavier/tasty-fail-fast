@@ -5,8 +5,6 @@ packages:
 
 extra-deps:
 - 'tasty-tap-0.0.4'
-- 'tasty-0.12'
-
 
 flags: {}
 
