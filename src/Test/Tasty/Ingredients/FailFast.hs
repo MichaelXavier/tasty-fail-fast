@@ -18,6 +18,11 @@ import           Data.Typeable
 import           Test.Tasty.Ingredients
 import           Test.Tasty.Options
 import           Test.Tasty.Runners
+
+#if MIN_VERSION_tasty(1,3,1)
+import           Test.Tasty.Providers.ConsoleFormat
+#endif
+
 -------------------------------------------------------------------------------
 import           Prelude
 -------------------------------------------------------------------------------
@@ -88,4 +93,8 @@ failOne = flip modifyTVar' go
 #if MIN_VERSION_tasty(0,11,0)
                      , resultShortDescription = mempty
 #endif
-                     , resultTime = 0}
+                     , resultTime = 0
+#if MIN_VERSION_tasty(1,3,1)
+                     , resultDetailsPrinter = noResultDetails
+#endif
+                     }
